@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  3. 无重复字符的最长子串
+  #
+
+方法一：滑动窗口
+func lengthOfLongestSubstring(s string) int {
+	longest, n := 0, len(s)        // len(s)返回字符串的字节数目（不是rune字符数目）
+	index := make(map[byte]int, n) // m 记录字节索引，byte 可避免额外的字节/字符串转换
+	for left, right := 0, 0; right &lt; n; right&#43;&#43; {
+		if idx, ok := index[s[right]]; ok { // 如果第i个字节已存在
+			left = max(left, idx&#43;1) // 取索引较大值作为起始索引（收缩窗口）
+		}
+		index[s[right]] = right              // 首次出现加入map，记录字节对应的索引
+		longest = max(longest, right-left&#43;1) // 统计无重复字符的最长子串
+	}
+	return longest
+}
+func lengthOfLongestSubstring(s string) int {
+	longest, n := 0, len(s)
+	index := make(map[byte]int, n)                // 记录字符对应的下标
+	for left, right := 0, 0; right &lt; n; right&#43;&#43; { // right&#43;&#43; 指针继续向后扫描
+		if idx, ok := index[s[right]]; ok &amp;&amp; idx &gt;= left { // 遇到重复字符，跳过
+			left = idx &#43; 1 // 收缩窗口
+		}
+		index[s[right]] = right //首次遇见，存储对应下标
+		longest = max(longest, right-left&#43;1)
+	}
+	return longest
+}
+func lengthOfLongestSubstring(s string) int {
+    longest, n := 0, len(s)
+    freq := make(map[byte]int, n) // freq 记录每个字节出现次数，byte 可避免额外的字节/字符串转换
+    for i, j := 0, 0; j &lt; n; j&#43;&#43; {
+        freq[s[j]]&#43;&#43;         // 首次出现存入哈希表，记为1
+        for freq[s[j]] &gt; 1 { // 循环检测：如果大于1，表示当前字节有重复
+            freq[s[i]]--         // 去重，直到 freq[s[j]] == 1,退出
+            i&#43;&#43;                  // 向后扫描
+            if freq[s[j]] == 1 { // 优化：如果无重复字符，则退出循环
+                break
+            }
+        }
+        longest = max(longest, j-i&#43;1) // 统计无重复字符的最长子串
+    }
+    return longest
+}
+方法二：位图">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="//localhost:1313/docs/leet/3.-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/">
+  <meta property="og:description" content="3. 无重复字符的最长子串 # 方法一：滑动窗口
+func lengthOfLongestSubstring(s string) int { longest, n := 0, len(s) // len(s)返回字符串的字节数目（不是rune字符数目） index := make(map[byte]int, n) // m 记录字节索引，byte 可避免额外的字节/字符串转换 for left, right := 0, 0; right &lt; n; right&#43;&#43; { if idx, ok := index[s[right]]; ok { // 如果第i个字节已存在 left = max(left, idx&#43;1) // 取索引较大值作为起始索引（收缩窗口） } index[s[right]] = right // 首次出现加入map，记录字节对应的索引 longest = max(longest, right-left&#43;1) // 统计无重复字符的最长子串 } return longest } func lengthOfLongestSubstring(s string) int { longest, n := 0, len(s) index := make(map[byte]int, n) // 记录字符对应的下标 for left, right := 0, 0; right &lt; n; right&#43;&#43; { // right&#43;&#43; 指针继续向后扫描 if idx, ok := index[s[right]]; ok &amp;&amp; idx &gt;= left { // 遇到重复字符，跳过 left = idx &#43; 1 // 收缩窗口 } index[s[right]] = right //首次遇见，存储对应下标 longest = max(longest, right-left&#43;1) } return longest } func lengthOfLongestSubstring(s string) int { longest, n := 0, len(s) freq := make(map[byte]int, n) // freq 记录每个字节出现次数，byte 可避免额外的字节/字符串转换 for i, j := 0, 0; j &lt; n; j&#43;&#43; { freq[s[j]]&#43;&#43; // 首次出现存入哈希表，记为1 for freq[s[j]] &gt; 1 { // 循环检测：如果大于1，表示当前字节有重复 freq[s[i]]-- // 去重，直到 freq[s[j]] == 1,退出 i&#43;&#43; // 向后扫描 if freq[s[j]] == 1 { // 优化：如果无重复字符，则退出循环 break } } longest = max(longest, j-i&#43;1) // 统计无重复字符的最长子串 } return longest } 方法二：位图">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>3. 无重复字符的最长子串 | </title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="//localhost:1313/docs/leet/3.-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/">
+<link rel="stylesheet" href="/book.min.26ab4dc3f6076ceda2f9c263aa4029ae3341dbcce339f901aa432b11da6e5894.css" integrity="sha256-JqtNw/YHbO2i&#43;cJjqkAprjNB28zjOfkBqkMrEdpuWJQ=" crossorigin="anonymous">
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.686c81ec62b33ae3a380dc9a611ed33c695b3651607a701f741faa801ea29992.js" integrity="sha256-aGyB7GKzOuOjgNyaYR7TPGlbNlFgenAfdB&#43;qgB6imZI=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span></span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a href="/docs/leetcode/" class="">Leetcode 题解</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leetcode/table-of-contents/" class="">Table of Contents</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leetcode/table-of-contents/with-toc/" class="">With ToC</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leetcode/table-of-contents/without-toc/" class="">Without ToC</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f35c3ab9667bee0851c63dfb62c4fb80" class="toggle"  />
+    <label for="section-f35c3ab9667bee0851c63dfb62c4fb80" class="flex justify-between">
+      <a role="button" class="">Collapsed</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leetcode/collapsed/3rd-level/" class="">3rd Level</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leetcode/collapsed/3rd-level/4th-level/" class="">4th Level</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <span>Leet</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leet/3.-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/" class="active">3. 无重复字符的最长子串</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leet/206.-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/" class="">206. 反转链表</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leet/buttons/" class="">Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leet/columns/" class="">Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leet/details/" class="">Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leet/hints/" class="">Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leet/mermaid/" class="">Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leet/tabs/" class="">Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/leet/katex/" class="">KaTeX</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/posts/"  >
+        Blog
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>3. 无重复字符的最长子串</h3>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#3-无重复字符的最长子串"><a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/">3. 无重复字符的最长子串</a></a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h2 id="3-无重复字符的最长子串">
+  <a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/">3. 无重复字符的最长子串</a>
+  <a class="anchor" href="#3-%e6%97%a0%e9%87%8d%e5%a4%8d%e5%ad%97%e7%ac%a6%e7%9a%84%e6%9c%80%e9%95%bf%e5%ad%90%e4%b8%b2">#</a>
+</h2>
+<p>方法一：滑动窗口</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">lengthOfLongestSubstring</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">longest</span>, <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, len(<span style="color:#a6e22e">s</span>)        <span style="color:#75715e">// len(s)返回字符串的字节数目（不是rune字符数目）</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">index</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">byte</span>]<span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">n</span>) <span style="color:#75715e">// m 记录字节索引，byte 可避免额外的字节/字符串转换</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">left</span>, <span style="color:#a6e22e">right</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">right</span> &lt; <span style="color:#a6e22e">n</span>; <span style="color:#a6e22e">right</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">idx</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">index</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">right</span>]]; <span style="color:#a6e22e">ok</span> { <span style="color:#75715e">// 如果第i个字节已存在</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">left</span> = max(<span style="color:#a6e22e">left</span>, <span style="color:#a6e22e">idx</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>) <span style="color:#75715e">// 取索引较大值作为起始索引（收缩窗口）</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">index</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">right</span>]] = <span style="color:#a6e22e">right</span>              <span style="color:#75715e">// 首次出现加入map，记录字节对应的索引</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">longest</span> = max(<span style="color:#a6e22e">longest</span>, <span style="color:#a6e22e">right</span><span style="color:#f92672">-</span><span style="color:#a6e22e">left</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>) <span style="color:#75715e">// 统计无重复字符的最长子串</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">longest</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">lengthOfLongestSubstring</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">longest</span>, <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, len(<span style="color:#a6e22e">s</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">index</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">byte</span>]<span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">n</span>)                <span style="color:#75715e">// 记录字符对应的下标</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">left</span>, <span style="color:#a6e22e">right</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">right</span> &lt; <span style="color:#a6e22e">n</span>; <span style="color:#a6e22e">right</span><span style="color:#f92672">++</span> { <span style="color:#75715e">// right++ 指针继续向后扫描</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">idx</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">index</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">right</span>]]; <span style="color:#a6e22e">ok</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">idx</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">left</span> { <span style="color:#75715e">// 遇到重复字符，跳过</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">left</span> = <span style="color:#a6e22e">idx</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#75715e">// 收缩窗口</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">index</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">right</span>]] = <span style="color:#a6e22e">right</span> <span style="color:#75715e">//首次遇见，存储对应下标</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">longest</span> = max(<span style="color:#a6e22e">longest</span>, <span style="color:#a6e22e">right</span><span style="color:#f92672">-</span><span style="color:#a6e22e">left</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">longest</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">lengthOfLongestSubstring</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">longest</span>, <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, len(<span style="color:#a6e22e">s</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">freq</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">byte</span>]<span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">n</span>) <span style="color:#75715e">// freq 记录每个字节出现次数，byte 可避免额外的字节/字符串转换</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">n</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">freq</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">j</span>]]<span style="color:#f92672">++</span>         <span style="color:#75715e">// 首次出现存入哈希表，记为1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">freq</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">j</span>]] &gt; <span style="color:#ae81ff">1</span> { <span style="color:#75715e">// 循环检测：如果大于1，表示当前字节有重复</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">freq</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">i</span>]]<span style="color:#f92672">--</span>         <span style="color:#75715e">// 去重，直到 freq[s[j]] == 1,退出</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>                  <span style="color:#75715e">// 向后扫描</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">freq</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">j</span>]] <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> { <span style="color:#75715e">// 优化：如果无重复字符，则退出循环</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">longest</span> = max(<span style="color:#a6e22e">longest</span>, <span style="color:#a6e22e">j</span><span style="color:#f92672">-</span><span style="color:#a6e22e">i</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>) <span style="color:#75715e">// 统计无重复字符的最长子串</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">longest</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>方法二：位图</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">lengthOfLongestSubstring</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">s</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">bitSet</span> [<span style="color:#ae81ff">256</span>]<span style="color:#66d9ef">bool</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">left</span>, <span style="color:#a6e22e">right</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">left</span> &lt; len(<span style="color:#a6e22e">s</span>) {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 右侧字符对应的 bitSet 被标记 true，说明此字符在 X 位置重复，需要左侧向前移动，直到将 X 标记为 false</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">bitSet</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">right</span>]] { <span style="color:#75715e">// s[right]第2次出现，与s[left]标记位重复</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">bitSet</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">left</span>]] = <span style="color:#66d9ef">false</span> <span style="color:#75715e">// 放弃 s[left] 标记位</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">left</span><span style="color:#f92672">++</span>                  <span style="color:#75715e">// 跳过重复，向后扫描</span>
+</span></span><span style="display:flex;"><span>		} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">bitSet</span>[<span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">right</span>]] = <span style="color:#66d9ef">true</span> <span style="color:#75715e">// s[right]第1次出现，标记为true，选择 s[right] 标记位</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">right</span><span style="color:#f92672">++</span>                 <span style="color:#75715e">// 向后扫描</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">result</span> &lt; <span style="color:#a6e22e">right</span><span style="color:#f92672">-</span><span style="color:#a6e22e">left</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">result</span> = <span style="color:#a6e22e">right</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">left</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">left</span><span style="color:#f92672">+</span><span style="color:#a6e22e">result</span> <span style="color:#f92672">&gt;=</span> len(<span style="color:#a6e22e">s</span>) <span style="color:#f92672">||</span> <span style="color:#a6e22e">right</span> <span style="color:#f92672">&gt;=</span> len(<span style="color:#a6e22e">s</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#3-无重复字符的最长子串"><a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/">3. 无重复字符的最长子串</a></a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
