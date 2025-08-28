@@ -1,0 +1,9 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'CodeTop 题解'
+
+
+[[menu.before]]
+  name = "Github"
+  url = "https://github.com/xilepeng"
+  weight = 20

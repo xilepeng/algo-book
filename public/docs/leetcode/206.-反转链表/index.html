@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en-us" dir="ltr">
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +7,14 @@
   206. 反转链表
   #
 
+方法一：迭代
 /**
  * Definition for singly-linked list.
  * type ListNode struct {
  *     Val int
  *     Next *ListNode
  * }
-*/
-// 方法一：迭代
+*/ 
 func reverseList(head *ListNode) *ListNode {
     var prev *ListNode
     curr := head
@@ -26,9 +26,8 @@ func reverseList(head *ListNode) *ListNode {
     }
     return prev
 }
-
-// 方法二：递归
-func reverseList_2(head *ListNode) *ListNode {
+方法二：递归
+func reverseList(head *ListNode) *ListNode {
     if head == nil || head.Next == nil { // 递归出口：没有节点或只有一个节点
         return head
     }
@@ -37,9 +36,8 @@ func reverseList_2(head *ListNode) *ListNode {
     head.Next = nil                   // 断开旧链
     return newHead
 }
-
-// 方法三：穿针引线
-func reverseList_3(head *ListNode) *ListNode {
+方法三：穿针引线
+func reverseList(head *ListNode) *ListNode {
     dummy, curr := &amp;ListNode{Next: head}, head
     for curr != nil &amp;&amp; curr.Next != nil { // 至少有2个节点
         temp := curr.Next
@@ -52,18 +50,23 @@ func reverseList_3(head *ListNode) *ListNode {
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="//localhost:1313/docs/leetcode/206.-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">
-  <meta property="og:description" content="206. 反转链表 # /** * Definition for singly-linked list. * type ListNode struct { * Val int * Next *ListNode * } */ // 方法一：迭代 func reverseList(head *ListNode) *ListNode { var prev *ListNode curr := head for curr != nil { temp := curr.Next curr.Next = prev prev = curr curr = temp } return prev } // 方法二：递归 func reverseList_2(head *ListNode) *ListNode { if head == nil || head.Next == nil { // 递归出口：没有节点或只有一个节点 return head } newHead := reverseList(head.Next) // 子问题 head.Next.Next = head // 翻转 head.Next = nil // 断开旧链 return newHead } // 方法三：穿针引线 func reverseList_3(head *ListNode) *ListNode { dummy, curr := &amp;ListNode{Next: head}, head for curr != nil &amp;&amp; curr.Next != nil { // 至少有2个节点 temp := curr.Next curr.Next = temp.Next temp.Next = dummy.Next // 如果等于 curr，将导致断开链表 dummy.Next = temp } return dummy.Next }">
-  <meta property="og:locale" content="en">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/leetcode/206.-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">
+  <meta property="og:site_name" content="CodeTop 题解">
+  <meta property="og:title" content="CodeTop 题解">
+  <meta property="og:description" content="206. 反转链表 # 方法一：迭代
+/** * Definition for singly-linked list. * type ListNode struct { * Val int * Next *ListNode * } */ func reverseList(head *ListNode) *ListNode { var prev *ListNode curr := head for curr != nil { temp := curr.Next curr.Next = prev prev = curr curr = temp } return prev } 方法二：递归
+func reverseList(head *ListNode) *ListNode { if head == nil || head.Next == nil { // 递归出口：没有节点或只有一个节点 return head } newHead := reverseList(head.Next) // 子问题 head.Next.Next = head // 翻转 head.Next = nil // 断开旧链 return newHead } 方法三：穿针引线
+func reverseList(head *ListNode) *ListNode { dummy, curr := &amp;ListNode{Next: head}, head for curr != nil &amp;&amp; curr.Next != nil { // 至少有2个节点 temp := curr.Next curr.Next = temp.Next temp.Next = dummy.Next // 如果等于 curr，将导致断开链表 dummy.Next = temp } return dummy.Next }">
+  <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-<title>206. 反转链表 | </title>
+<title>206. 反转链表 | CodeTop 题解</title>
 <link rel="icon" href="/favicon.png" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="//localhost:1313/docs/leetcode/206.-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">
+<link rel="canonical" href="http://localhost:1313/docs/leetcode/206.-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">
 <link rel="stylesheet" href="/book.min.26ab4dc3f6076ceda2f9c263aa4029ae3341dbcce339f901aa432b11da6e5894.css" integrity="sha256-JqtNw/YHbO2i&#43;cJjqkAprjNB28zjOfkBqkMrEdpuWJQ=" crossorigin="anonymous">
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.a399eef23f25a22e6b27bf9959f8f75ac868459d04d4deb0b5a3209293156af9.js" integrity="sha256-o5nu8j8loi5rJ7&#43;ZWfj3WshoRZ0E1N6wtaMgkpMVavk=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.314840bf3c62b5f3b1747150d8a355f18638fc05b61810224d6498ab6bb7dd53.js" integrity="sha256-MUhAvzxitfOxdHFQ2KNV8YY4/AW2GBAiTWSYq2u33VM=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -79,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
         
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/"><span></span>
+  <a class="flex align-center" href="/"><span>CodeTop 题解</span>
   </a>
 </h2>
 
@@ -97,6 +100,18 @@ https://github.com/alex-shpak/hugo-book
 
 
 
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/xilepeng"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
 
 
 
@@ -106,19 +121,6 @@ https://github.com/alex-shpak/hugo-book
 
 
   
-  <ul>
-    
-      
-        <li class="book-section-flat" >
-          
-  
-  
-
-  
-    <a href="/docs/leetcode/" class="">Leetcode 题解</a>
-  
-
-          
   <ul>
     
       
@@ -143,11 +145,6 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/leetcode/206.-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/" class="active">206. 反转链表</a>
   
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -220,14 +217,14 @@ https://github.com/alex-shpak/hugo-book
   <a href="https://leetcode-cn.com/problems/reverse-linked-list/">206. 反转链表</a>
   <a class="anchor" href="#206-%e5%8f%8d%e8%bd%ac%e9%93%be%e8%a1%a8">#</a>
 </h2>
+<p>方法一：迭代</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * Definition for singly-linked list.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * type ListNode struct {
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"> *     Val int
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"> *     Next *ListNode
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * }
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 方法一：迭代</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span> 
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reverseList</span>(<span style="color:#a6e22e">head</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">prev</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">curr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">head</span>
@@ -239,9 +236,8 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">prev</span>
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 方法二：递归</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reverseList_2</span>(<span style="color:#a6e22e">head</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span> {
+</span></span></code></pre></div><p>方法二：递归</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reverseList</span>(<span style="color:#a6e22e">head</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">head</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">head</span>.<span style="color:#a6e22e">Next</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> { <span style="color:#75715e">// 递归出口：没有节点或只有一个节点</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">head</span>
 </span></span><span style="display:flex;"><span>    }
@@ -250,9 +246,8 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">head</span>.<span style="color:#a6e22e">Next</span> = <span style="color:#66d9ef">nil</span>                   <span style="color:#75715e">// 断开旧链</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">newHead</span>
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 方法三：穿针引线</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reverseList_3</span>(<span style="color:#a6e22e">head</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span> {
+</span></span></code></pre></div><p>方法三：穿针引线</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reverseList</span>(<span style="color:#a6e22e">head</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">dummy</span>, <span style="color:#a6e22e">curr</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ListNode</span>{<span style="color:#a6e22e">Next</span>: <span style="color:#a6e22e">head</span>}, <span style="color:#a6e22e">head</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">curr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">curr</span>.<span style="color:#a6e22e">Next</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> { <span style="color:#75715e">// 至少有2个节点</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">temp</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">curr</span>.<span style="color:#a6e22e">Next</span>
